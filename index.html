@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trạm công nghệ Funny - Khơi dậy đam mê lập trình</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'funny-blue-dark': '#2F5C8F',
+                        'funny-blue-mid': '#3F6FA3',
+                        'funny-gold-light': '#FFD27A',
+                        'funny-gold-grad': '#F6B24A',
+                        'funny-orange-border': '#D98A1E',
+                        'funny-gold-decor': '#E7B75F',
+                        'funny-gold-dark': '#CFA046',
+                        'funny-orange-badge': '#F29C2B',
+                        'funny-text-dark': '#2B2B2B',
+                        'funny-text-gray': '#555555',
+                        'funny-cyan-light': '#4FB3C8',
+                        'funny-cyan-teal': '#2A8CA3',
+                        'funny-paper': '#F3E1B6',
+                        'funny-orange-cta': '#E38B1E',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { overflow-x: hidden; width: 100%; position: relative; }
+
+
+        /* ẨN THANH CUỘN HOÀN TOÀN NHƯNG VẪN CHO PHÉP VUỐT */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+
+        /* KIỂM SOÁT THIẾT BỊ ĐIỀU HƯỚNG */
+        .desktop-controls { display: flex; }
+        .mobile-controls { display: none; }
+
+
+        @media (hover: none) and (pointer: coarse) {
+            .desktop-controls { display: none !important; }
+            .mobile-controls { display: flex !important; justify-content: center; }
+        }
+
+
+        .text-gradient-gold {
+            background: linear-gradient(90deg, #F6B24A 0%, #FFD27A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 0px rgba(217, 138, 30, 0.3);
+        }
+
+
+        .bubble-frame {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 2rem; 
+            border: 2px solid rgba(79, 179, 200, 0.2);
+            box-shadow: 0 10px 30px rgba(47, 92, 143, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+        @media (min-width: 768px) {
+            .bubble-frame { border-radius: 40px; }
+        }
+        
+        .bg-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), rgba(79, 179, 200, 0.1));
+            box-shadow: 0 0 20px rgba(79, 179, 200, 0.2);
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+            100% { transform: translateY(0px) scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-funny-text-dark font-sans antialiased">
+
+
+    <!-- HEADER CHÍNH -->
+    <nav id="navbar" class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center cursor-pointer relative z-10" onclick="window.scrollTo(0,0)">
+                    <img src="image_219a1a.jpg" alt="tcnf-logo" class="h-10 w-auto mr-2 md:mr-3 rounded-lg object-contain">
+                    <span class="font-extrabold text-xl md:text-2xl text-funny-blue-dark tracking-tight hidden sm:block">Trạm công nghệ <span class="text-funny-orange-cta">Funny</span></span>
+                </div>
+               
+                <div class="hidden lg:flex items-center space-x-10 relative z-10">
+                    <div class="flex space-x-8">
+                        <a href="#thanh-tich" class="text-funny-text-dark hover:text-funny-cyan-teal font-bold transition-colors">Góc Vinh Danh</a>
+                        <a href="#chuong-trinh-hoc" class="text-funny-text-dark hover:text-funny-cyan-teal font-bold transition-colors">Chương Trình Học</a>
+                    </div>
+                    <a href="#dang-ky" class="bg-funny-orange-cta hover:bg-funny-orange-border text-funny-text-dark font-bold py-2.5 px-6 rounded-full shadow-lg transition-transform hover:scale-105 border-b-2 border-funny-gold-dark shrink-0">
+                        Nhận Lộ Trình
+                    </a>
+                </div>
+
+
+                <div class="lg:hidden flex items-center">
+                    <button id="mobileMenuBtn" class="text-funny-blue-dark hover:text-funny-cyan-teal focus:outline-none p-2">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
+            <div class="flex flex-col px-6 pt-4 pb-8 space-y-4">
+                <a href="#thanh-tich" class="mobile-link text-funny-text-dark font-bold text-lg py-2 border-b border-gray-100">Góc Vinh Danh</a>
+                <a href="#chuong-trinh-hoc" class="mobile-link text-funny-text-dark font-bold text-lg py-2 border-b border-gray-100">Chương Trình Học</a>
+                <a href="#dang-ky" class="mobile-link bg-funny-orange-cta text-funny-text-dark font-bold text-lg py-3 px-4 rounded-xl text-center mt-4 shadow-md border-b-4 border-funny-gold-dark">
+                    Nhận Lộ Trình Ngay
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- FLOATING ICONS -->
+    <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 flex flex-col items-end gap-3 md:gap-4">
+        
+        <!-- 1. Nút Zalo: Nhóm Nhận Tài Liệu -->
+        <a href="https://zalo.me/g/YOUR_GROUP_LINK" target="_blank" class="group relative flex items-center justify-end w-12 h-12 md:w-14 md:h-14 hover:w-40 md:hover:w-44 bg-[#0068FF] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+            <span class="absolute right-12 md:right-14 whitespace-nowrap text-white font-bold text-xs md:text-sm pr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+            Nhận Tài Liệu
+            </span>
+            <div class="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center shrink-0 absolute right-0 bg-[#0068FF] rounded-full z-10">
+                <span class="text-white font-black text-[10px] md:text-xs">Zalo</span>
+            </div>
+        </a>
+
+
+        <!-- 2. Nút Zalo: Chat Tư Vấn -->
+        <a href="https://zalo.me/0833257378" target="_blank" class="group relative flex items-center justify-end w-12 h-12 md:w-14 md:h-14 hover:w-36 md:hover:w-40 bg-[#0068FF] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+            <span class="absolute right-12 md:right-14 whitespace-nowrap text-white font-bold text-xs md:text-sm pr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+            Chat Tư Vấn
+            </span>
+            <div class="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center shrink-0 absolute right-0 bg-[#0068FF] rounded-full z-10">
+                <span class="text-white font-black text-[10px] md:text-xs">Zalo</span>
+            </div>
+        </a>
+
+
+        <!-- 3. Nút Messenger -->
+        <a href="https://m.me/your_facebook_page" target="_blank" class="group relative flex items-center justify-end w-12 h-12 md:w-14 md:h-14 hover:w-36 md:hover:w-40 bg-gradient-to-tr from-[#00C6FF] to-[#0072FF] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+            <span class="absolute right-12 md:right-14 whitespace-nowrap text-white font-bold text-xs md:text-sm pr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+            Messenger
+            </span>
+            <div class="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center shrink-0 absolute right-0 bg-transparent rounded-full z-10">
+                <svg class="w-6 h-6 md:w-8 md:h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.259c0 2.916 1.531 5.496 3.883 7.155v3.472l3.523-1.94c1.474.408 3.033.627 4.594.627 5.523 0 10-4.145 10-9.259C24 6.145 19.523 2 12 2zm1.111 12.333l-2.88-3.083-5.636 3.083 6.19-6.583 2.947 3.083 5.568-3.083-6.189 6.583z"/></svg>
+            </div>
+        </a>
+    </div>
+
+
+    <!-- BANNER PHỤ SLIDER -->
+    <header class="relative bg-gradient-to-br from-funny-blue-dark to-funny-blue-mid overflow-hidden" id="hero-banner-section">
+        <div class="bg-bubble w-32 h-32 md:w-40 md:h-40 top-20 left-4 md:left-10 opacity-30"></div>
+        <div class="bg-bubble w-48 h-48 md:w-64 md:h-64 bottom-[-50px] right-4 md:right-20 opacity-20" style="animation-delay: 1.5s;"></div>
+        
+        <!-- Wrapper cuộn chứa 3 Banner -->
+        <div class="relative w-full h-full overflow-hidden" id="banner-viewport">
+            <div class="flex transition-transform duration-700 ease-in-out h-full" id="banner-slider">
+                
+                <!-- BANNER 1: Ưu đãi (Mặc định) -->
+                <div class="w-full shrink-0 relative z-10 pt-28 pb-20 md:pt-36 md:pb-28 flex items-center">
+                    <div class="w-full max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-8 md:gap-12">
+                        <div class="w-full lg:w-1/2 text-center lg:text-left mt-4 md:mt-0">
+                            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-funny-gold-light border border-funny-gold-light/40 font-bold py-1.5 px-4 rounded-full mb-4 md:mb-6 text-xs md:text-sm">
+                                <span class="w-2 h-2 rounded-full bg-funny-orange-badge animate-pulse"></span>
+                                ĐẶC QUYỀN CHÀO HÈ
+                            </div>
+                            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 text-white leading-tight">
+                                Khơi Dậy Đam Mê <br class="hidden sm:block" />
+                                <span class="text-gradient-gold">Công Nghệ Tương Lai</span>
+                            </h1>
+                            <p class="text-blue-100 text-base md:text-lg lg:text-xl mb-8 md:mb-10 font-light max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                                Học lập trình tại <strong class="text-funny-gold-light font-bold">Trạm Công Nghệ Funny</strong>. Cùng nhau khám phá thế giới công nghệ.
+                            </p>
+                            <div class="flex justify-center lg:justify-start">
+                                <a href="#dang-ky" class="w-full sm:w-auto bg-funny-orange-cta hover:bg-funny-orange-border text-funny-text-dark font-extrabold text-lg md:text-xl py-4 px-8 rounded-full shadow-[0_6px_0_#CFA046] hover:translate-y-1 hover:shadow-[0_2px_0_#CFA046] transition-all text-center">
+                                    NHẬN ƯU ĐÃI LÊN TỚI 20%
+                                </a>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/2 max-w-md md:max-w-lg mx-auto relative mt-6 lg:mt-0">
+                            <div class="absolute inset-0 bg-funny-cyan-light rounded-full blur-3xl opacity-30 transform translate-x-5 translate-y-5 md:translate-x-10 md:translate-y-10"></div>
+                            <div class="bubble-frame p-4 md:p-6 relative z-10">
+                                <div class="aspect-video bg-gray-200 rounded-2xl md:rounded-[2rem] overflow-hidden mb-4 md:mb-5 relative shadow-inner">
+                                    <img src="image_5a4f07.jpg" alt="Lớp học tại Trạm công nghệ Funny" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/600x400/3F6FA3/FFFFFF?text=[Ảnh+Mô+Phỏng+Lớp+Học]';">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-12 h-12 md:w-16 md:h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/50 transition">
+                                            <svg class="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between px-1 md:px-2">
+                                    <div>
+                                        <p class="font-extrabold text-funny-blue-dark text-base md:text-lg">Giờ học thú vị</p>
+                                        <p class="text-xs md:text-sm text-funny-text-gray font-medium">Sản phẩm hấp dẫn</p>
+                                    </div>
+                                    <div class="flex -space-x-2 md:-space-x-3">
+                                        <img class="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white object-cover" src="https://via.placeholder.com/50/4FB3C8/FFFFFF?text=H" alt="Học viên">
+                                        <img class="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white object-cover" src="https://via.placeholder.com/50/F29C2B/FFFFFF?text=V" alt="Học viên">
+                                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-funny-cyan-teal border-2 border-white flex items-center justify-center text-white text-[10px] md:text-xs font-bold shadow-sm">+</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- BANNER 2: Lợi ích học lập trình -->
+                <div class="w-full shrink-0 relative z-10 pt-28 pb-20 md:pt-36 md:pb-28 flex items-center">
+                    <div class="w-full max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-8 md:gap-12">
+                        <div class="w-full lg:w-1/2 text-center lg:text-left mt-4 md:mt-0 order-2 lg:order-1">
+                            <div class="inline-flex items-center gap-2 bg-funny-cyan-teal/30 backdrop-blur-md text-white border border-funny-cyan-light/40 font-bold py-1.5 px-4 rounded-full mb-4 md:mb-6 text-xs md:text-sm">
+                                💡 PHÁT TRIỂN TƯ DUY LOGIC
+                            </div>
+                            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 text-white leading-tight">
+                                Lập Trình - Chìa Khóa <br class="hidden sm:block" />
+                                <span class="text-funny-gold-light">Mở Cửa Tương Lai</span>
+                            </h1>
+                            <p class="text-blue-100 text-base md:text-lg lg:text-xl mb-8 md:mb-10 font-light max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                                Không chỉ học gõ code, trẻ còn được rèn luyện <strong class="text-white font-bold">tính kiên nhẫn</strong>, khả năng <strong class="text-white font-bold">giải quyết vấn đề</strong> và sẵn sàng hội nhập kỷ nguyên số.
+                            </p>
+                            <div class="flex justify-center lg:justify-start">
+                                <a href="#chuong-trinh-hoc" class="w-full sm:w-auto bg-white hover:bg-gray-100 text-funny-blue-dark font-extrabold text-lg md:text-xl py-4 px-8 rounded-full shadow-[0_6px_0_#9CA3AF] hover:translate-y-1 hover:shadow-[0_2px_0_#9CA3AF] transition-all text-center">
+                                    KHÁM PHÁ LỘ TRÌNH
+                                </a>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/2 max-w-md md:max-w-lg mx-auto relative mt-6 lg:mt-0 order-1 lg:order-2">
+                            <div class="absolute inset-0 bg-funny-gold-dark rounded-full blur-3xl opacity-30 transform -translate-x-5 translate-y-5"></div>
+                            <div class="bubble-frame p-2 md:p-3 relative z-10 bg-white/10 backdrop-blur-md border-white/20">
+                                
+                                <!-- CHÈN LINK VIDEO CỦA HOSTING VÀO THUỘC TÍNH SRC BÊN DƯỚI -->
+                                <video autoplay muted loop playsinline class="w-full h-auto rounded-2xl md:rounded-[1.5rem] shadow-lg object-cover aspect-video">
+                                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                                    Trình duyệt của bạn không hỗ trợ thẻ video.
+                                </video>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- BANNER 3: Facebook Fanpage -->
+                <div class="w-full shrink-0 relative z-10 pt-28 pb-20 md:pt-36 md:pb-28 flex items-center">
+                    <div class="w-full max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-8 md:gap-12">
+                        <div class="w-full lg:w-1/2 text-center lg:text-left mt-4 md:mt-0">
+                            <div class="inline-flex items-center gap-2 bg-[#1877F2]/20 backdrop-blur-md text-white border border-[#1877F2]/40 font-bold py-1.5 px-4 rounded-full mb-4 md:mb-6 text-xs md:text-sm">
+                                🌐 KẾT NỐI CÙNG TCNF
+                            </div>
+                            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 text-white leading-tight">
+                                Cộng Đồng Công Nghệ <br class="hidden sm:block" />
+                                <span class="text-[#4094FF]">Sôi Động Mỗi Ngày</span>
+                            </h1>
+                            <p class="text-blue-100 text-base md:text-lg lg:text-xl mb-8 md:mb-10 font-light max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                                Cập nhật ngay những khoảnh khắc lớp học đáng nhớ, các dự án học viên xuất sắc và kiến thức công nghệ bổ ích trên Fanpage của chúng tôi.
+                            </p>
+                            <div class="flex justify-center lg:justify-start">
+                                <!-- Link sang Fanpage Facebook -->
+                                <a href="https://www.facebook.com/your_fanpage" target="_blank" class="w-full sm:w-auto bg-[#1877F2] hover:bg-[#0c62d4] text-white font-extrabold text-lg md:text-xl py-4 px-8 rounded-full shadow-[0_6px_0_#0a4c9c] hover:translate-y-1 hover:shadow-[0_2px_0_#0a4c9c] transition-all text-center flex items-center justify-center gap-2">
+                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                    GHÉ THĂM FANPAGE
+                                </a>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/2 max-w-md md:max-w-lg mx-auto relative mt-6 lg:mt-0">
+                            <div class="absolute inset-0 bg-[#1877F2] rounded-full blur-3xl opacity-20 transform translate-x-5 -translate-y-5"></div>
+                            
+                            <!-- Layout giả lập bài đăng Facebook -->
+                            <div class="bg-white rounded-[20px] shadow-2xl overflow-hidden relative z-10 border border-gray-100">
+                                <div class="p-4 flex items-center gap-3">
+                                    <img src="image_219a1a.jpg" class="w-10 h-10 rounded-full border border-gray-200 object-cover bg-white">
+                                    <div>
+                                        <p class="font-bold text-sm text-gray-900">Trạm công nghệ Funny</p>
+                                        <p class="text-xs text-gray-500 flex items-center gap-1">Vừa xong <span class="w-1 h-1 bg-gray-400 rounded-full"></span> 🌎</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- ĐOẠN TEXT BỊ CẮT VÀ CÓ NÚT XEM THÊM TRỎ LINK FANPAGE -->
+                                <div class="px-4 pb-2 text-sm text-gray-800 font-medium">
+                                    <p class="line-clamp-2 text-justify">
+                                        🔥 Tuyển sinh lớp Lập trình K24 - Nhận ngay ưu đãi ngập tràn mùa hè! Inbox page để được hỗ trợ nhé bố mẹ ơi. Tuyển sinh lớp Lập trình K24 - Nhận ngay ưu đãi ngập tràn mùa hè! Inbox page để được hỗ trợ nhé bố mẹ ơi. Tuyển sinh lớp Lập trình K24 - Nhận ngay ưu đãi ngập tràn mùa hè! Inbox page để được hỗ trợ nhé bố mẹ ơi 👇
+                                    </p>
+                                    <a href="https://www.facebook.com/your_fanpage" target="_blank" class="text-gray-500 hover:text-gray-800 font-bold mt-1 transition-colors inline-block">... Xem thêm</a>
+                                </div>
+
+
+                                <div class="aspect-video bg-gray-100 relative">
+                                    <img src="https://via.placeholder.com/800x450/2F5C8F/FFFFFF?text=[Ảnh+Bài+Viết+Facebook]" class="w-full h-full object-cover">
+                                </div>
+                                
+                                <!-- CÁC NÚT TƯƠNG TÁC ĐỀU TRỎ LINK FANPAGE -->
+                                <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-between text-gray-500 text-sm font-medium">
+                                    <a href="https://www.facebook.com/your_fanpage" target="_blank" class="hover:bg-gray-200 px-3 py-1.5 rounded-md cursor-pointer transition flex items-center gap-1">👍 Thích</a>
+                                    <a href="https://www.facebook.com/your_fanpage" target="_blank" class="hover:bg-gray-200 px-3 py-1.5 rounded-md cursor-pointer transition flex items-center gap-1">💬 Bình luận</a>
+                                    <a href="https://www.facebook.com/your_fanpage" target="_blank" class="hover:bg-gray-200 px-3 py-1.5 rounded-md cursor-pointer transition flex items-center gap-1">↗️ Chia sẻ</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <!--(PAGINATION DOTS) -->
+        <div class="absolute bottom-6 md:bottom-8 left-0 right-0 flex justify-center gap-3 z-20" id="banner-dots">
+            <button onclick="goToBanner(0)" class="banner-dot w-10 h-2.5 rounded-full bg-funny-gold-light transition-all shadow-md"></button>
+            <button onclick="goToBanner(1)" class="banner-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all shadow-md"></button>
+            <button onclick="goToBanner(2)" class="banner-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all shadow-md"></button>
+        </div>
+    </header>
+
+
+    <!-- GÓC VINH DANH -->
+    <section id="thanh-tich" class="py-12 md:py-16 bg-funny-paper relative border-b border-funny-gold-decor/30">
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#CFA046 1.5px, transparent 1.5px); background-size: 30px 30px;"></div>
+       
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="px-4 mb-6 md:mb-10 flex justify-between items-end gap-4">
+                <div class="text-left flex-1">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-funny-blue-dark">Góc Vinh Danh</h2>
+                    <p class="text-funny-text-dark mt-2 text-sm md:text-base font-medium hidden sm:block">Chiêm ngưỡng thành tích ấn tượng của học viên Trạm công nghệ Funny</p>
+                </div>
+                <div class="desktop-controls gap-2 md:gap-3 shrink-0 pb-1 md:pb-2">
+                    <button class="prev-achievement w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-funny-gold-dark/40 flex items-center justify-center hover:border-funny-cyan-teal hover:bg-white text-funny-blue-dark hover:text-funny-cyan-teal transition-all shadow-sm">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <button class="next-achievement w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-funny-gold-dark/40 flex items-center justify-center hover:border-funny-cyan-teal hover:bg-white text-funny-blue-dark hover:text-funny-cyan-teal transition-all shadow-sm">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <p class="text-funny-text-dark px-4 mb-6 text-sm font-medium block sm:hidden">Chiêm ngưỡng các dự án ấn tượng của học viên Trạm công nghệ Funny</p>
+
+
+            <div id="achievement-scroll" class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 md:gap-6 px-4 pb-4 md:pb-6 items-stretch">
+                <!-- Nội dung sẽ được sinh tự động từ JS CONFIG -->
+            </div>
+
+
+            <div class="mobile-controls mt-2 pb-4">
+                <span class="inline-flex items-center gap-2 animate-pulse text-funny-blue-dark text-xs font-medium">
+                    &larr; Vuốt để xem thêm dự án &rarr;
+                </span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CHƯƠNG TRÌNH HỌC -->
+    <section id="chuong-trinh-hoc" class="py-12 md:py-16 bg-white relative border-b border-gray-100">
+        <div class="max-w-7xl mx-auto">
+            <div class="px-4 mb-6 md:mb-10 flex justify-between items-end gap-4">
+                <div class="text-left flex-1">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-funny-blue-dark uppercase">Chương Trình Đào Tạo</h2>
+                    <p class="text-funny-text-gray mt-2 text-sm md:text-base font-medium hidden sm:block">Lộ trình được thiết kế cá nhân hóa theo từng độ tuổi và mục tiêu</p>
+                </div>
+                <div class="desktop-controls gap-2 md:gap-3 shrink-0 pb-1 md:pb-2">
+                    <button class="prev-course w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-funny-cyan-teal text-gray-500 hover:text-funny-cyan-teal hover:bg-gray-50 transition-colors shadow-sm">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <button class="next-course w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-funny-cyan-teal text-gray-500 hover:text-funny-cyan-teal hover:bg-gray-50 transition-colors shadow-sm">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <p class="text-funny-text-gray px-4 mb-6 text-sm font-medium block sm:hidden">Lộ trình được thiết kế cá nhân hóa theo từng độ tuổi và mục tiêu</p>
+
+
+            <div id="course-scroll" class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 md:gap-6 px-4 pb-4 md:pb-6 pt-4 md:pt-6 items-stretch">
+                <!-- Nội dung sẽ được sinh tự động từ JS CONFIG -->
+            </div>
+           
+            <div class="mobile-controls mt-2 pb-4">
+                <span class="inline-flex items-center gap-2 animate-pulse bg-gray-50 px-5 py-2 rounded-full border border-gray-200 shadow-sm text-funny-blue-dark text-xs font-medium">
+                    <svg class="w-3 h-3 text-funny-orange-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Vuốt để xem thêm khóa học
+                    <svg class="w-3 h-3 text-funny-orange-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FORM ĐĂNG KÝ -->
+    <section id="dang-ky" class="py-16 md:py-20 bg-funny-blue-dark relative px-4 overflow-hidden">
+        <div class="bg-bubble w-64 h-64 md:w-[400px] md:h-[400px] top-[-50px] left-[-50px] md:top-[-100px] md:left-[-100px] opacity-10"></div>
+        <div class="bg-bubble w-48 h-48 md:w-[300px] md:h-[300px] bottom-[-30px] right-[-30px] md:bottom-[-50px] md:right-[-50px] opacity-20" style="animation-delay: 2s;"></div>
+
+
+        <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10 md:gap-12 relative z-10">
+           
+            <div class="w-full lg:w-5/12 text-white text-center lg:text-left">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 text-gradient-gold">"Không cần giỏi <br class="hidden lg:block">- Chỉ cần bắt đầu"</h2>
+                <p class="text-blue-100 text-base md:text-lg mb-6 md:mb-8 font-light max-w-lg mx-auto lg:mx-0">
+                    Đăng ký ngay để nhận tư vấn <strong class="text-funny-gold-light">LỘ TRÌNH HỌC MIỄN PHÍ</strong> và chương trình giảm giá hè về <strong class="text-funny-gold-light">lên tới 20%</strong>.
+                </p>
+                <div class="hidden md:flex flex-col gap-3 md:gap-4 max-w-md mx-auto lg:mx-0 text-left">
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 flex shrink-0 items-center justify-center border border-white/20">📋</div>
+                        <p class="font-medium text-sm md:text-base">Điền thông tin vào biểu mẫu bên cạnh</p>
+                    </div>
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 flex shrink-0 items-center justify-center border border-white/20">📞</div>
+                        <p class="font-medium text-sm md:text-base">Chúng tôi sẽ liên hệ tư vấn</p>
+                    </div>
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 flex shrink-0 items-center justify-center border border-white/20">🚀</div>
+                        <p class="font-medium text-sm md:text-base">Nhận ưu đãi và bắt đầu hành trình khám phá thế giới số</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="w-full lg:w-7/12 bubble-frame !bg-white/95 p-6 md:p-8 lg:p-10 shadow-2xl">
+                <div class="text-center mb-6 md:mb-8">
+                    <h3 class="text-xl md:text-2xl font-black text-funny-blue-dark">ĐĂNG KÝ TƯ VẤN</h3>
+                </div>
+
+
+                <!-- Form Gửi Dữ Liệu Lên Google Sheet -->
+                <form id="leadForm" action="https://docs.google.com/forms/d/e/1FAIpQLScsN2PPCI-HYAf1HUoyV0xtWwWSxC51lTGh3TKvE05PN4zzNw/formResponse" method="POST" target="hidden_iframe" class="space-y-4 md:space-y-5 text-left">
+                   
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                        <div>
+                            <label class="block text-xs md:text-sm font-bold text-funny-text-dark mb-1.5 ml-1 md:ml-2">Tên Người đăng ký <span class="text-red-500">*</span></label>
+                            <input type="text" id="parentName" name="entry.810894206" required class="w-full px-4 py-3 md:px-5 md:py-3.5 rounded-xl md:rounded-2xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-funny-cyan-teal focus:ring-2 focus:ring-funny-cyan-teal/20 transition-all font-medium text-sm" placeholder="Nhập họ tên người đăng ký...">
+                        </div>
+                        <div>
+                            <label class="block text-xs md:text-sm font-bold text-funny-text-dark mb-1.5 ml-1 md:ml-2">SĐT Liên hệ <span class="text-red-500">*</span></label>
+                            <input type="tel" name="entry.887187056" required pattern="[0-9]{9,11}" class="w-full px-4 py-3 md:px-5 md:py-3.5 rounded-xl md:rounded-2xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-funny-cyan-teal focus:ring-2 focus:ring-funny-cyan-teal/20 transition-all font-medium text-sm" placeholder="Nhập sđt...">
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <label class="block text-xs md:text-sm font-bold text-funny-text-dark mb-1.5 ml-1 md:ml-2">Tên Học sinh <span class="text-red-500">*</span></label>
+                        <input type="text" name="entry.1735680748" class="w-full px-4 py-3 md:px-5 md:py-3.5 rounded-xl md:rounded-2xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-funny-cyan-teal focus:ring-2 focus:ring-funny-cyan-teal/20 transition-all font-medium text-sm" placeholder="Nhập tên học sinh...">
+                    </div>
+
+
+                    <div>
+                        <label class="block text-xs md:text-sm font-bold text-funny-text-dark mb-1.5 ml-1 md:ml-2">Khóa học quan tâm</label>
+                        <div class="relative">
+                            <select id="form_course_select" name="entry.1803058450" class="w-full px-4 py-3 md:px-5 md:py-3.5 rounded-xl md:rounded-2xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-funny-cyan-teal focus:ring-2 focus:ring-funny-cyan-teal/20 transition-all font-medium text-sm appearance-none">
+                                <option value="Cần tư vấn lộ trình">Chọn khóa học...</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- THẺ ẨN CHỨA UTM NGUỒN MARKETING -->
+                    <input type="hidden" name="entry.1002463818" id="utm_source" value="">
+
+
+                    <div class="pt-2">
+                        <button type="submit" id="submitBtn" class="w-full bg-funny-orange-cta hover:bg-funny-orange-border text-funny-text-dark font-extrabold text-base md:text-lg py-3.5 md:py-4 rounded-xl md:rounded-2xl shadow-[0_4px_0_#CFA046] md:shadow-[0_6px_0_#CFA046] hover:translate-y-1 hover:shadow-[0_2px_0_#CFA046] transition-all">
+                            GỬI THÔNG TIN NGAY
+                        </button>
+                    </div>
+                   
+                    <div id="successMessage" class="hidden text-center text-green-700 font-bold bg-green-100 p-3 md:p-4 rounded-xl md:rounded-2xl border border-green-300 mt-4 text-sm md:text-base animate-pulse">
+                        🎉 Đăng ký thành công! Chúng tôi sẽ sớm liên hệ.
+                    </div>
+                </form>
+                <!-- iFrame Ẩn để hứng màn hình xác nhận của Google Form -->
+                <iframe name="hidden_iframe" id="hidden_iframe" class="hidden"></iframe>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="bg-white border-t border-gray-100 pt-10 md:pt-12 pb-6 md:pb-8 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8">
+                <div class="flex flex-col items-center md:items-start">
+                    <div class="flex items-center mb-3 md:mb-4">
+                        <img src="image_219a1a.jpg" alt="tcnf-logo" class="h-8 md:h-10 w-auto mr-2 md:mr-3 rounded-lg object-contain">
+                        <span class="font-extrabold text-xl md:text-2xl text-funny-blue-dark tracking-tight">Trạm công nghệ <span class="text-funny-orange-cta">Funny</span></span>
+                    </div>
+                    <p class="text-xs md:text-sm text-funny-text-gray text-center md:text-justify leading-relaxed">
+                        <b>Đánh thức đam mê, đổi thay góc nhìn</b>. Chúng tôi kiến tạo môi trường học tập thoải mái và chất lượng, nơi học sinh không chỉ sử dụng máy tính mà còn làm chủ công nghệ để phát triển tư duy logic và sức sáng tạo đột phá.
+                    </p>
+                </div>
+               
+                <div class="text-center md:text-left">
+                    <h4 class="font-bold text-funny-blue-dark text-base md:text-lg mb-3 md:mb-4">Liên Hệ</h4>
+                    <ul class="space-y-1 md:space-y-2 text-xs md:text-sm text-funny-text-gray">
+                        <li><strong>Hotline:</strong> 0398 200 022</li>
+                        <li><strong>Email:</strong> trungha.tcnf@gmail.com</li>
+                    </ul>
+                    <div class="flex justify-center md:justify-start gap-3 md:gap-4 mt-5">
+                        <!-- Nút Facebook -->
+                        <a href="https://www.facebook.com/your_fanpage" target="_blank" class="w-8 h-8 md:w-10 md:h-10 bg-gray-100 rounded-full flex items-center justify-center text-funny-blue-dark hover:bg-[#1877F2] hover:text-white transition-colors" title="Fanpage Facebook">
+                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <!-- Nút Zalo Group -->
+                        <a href="https://zalo.me/g/YOUR_GROUP_LINK" target="_blank" class="w-8 h-8 md:w-10 md:h-10 bg-[#0068FF] text-white rounded-full flex items-center justify-center hover:bg-[#0056cc] transition-colors font-black text-[8px] md:text-[10px]" title="Nhóm Zalo Nhận Tài Liệu">
+                            Zalo
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="text-center md:text-left">
+                    <h4 class="font-bold text-funny-blue-dark text-base md:text-lg mb-3 md:mb-4">Khám Phá</h4>
+                    <ul class="space-y-2 md:space-y-3 text-xs md:text-sm text-funny-text-gray font-medium">
+                        <li><a href="#" onclick="window.scrollTo(0,0); return false;" class="hover:text-funny-cyan-teal transition-colors">Trang chủ</a></li>
+                        <li><a href="#thanh-tich" class="hover:text-funny-cyan-teal transition-colors">Góc vinh danh</a></li>
+                        <li><a href="#chuong-trinh-hoc" class="hover:text-funny-cyan-teal transition-colors">Chương trình đào tạo</a></li>
+                        <li><a href="#dang-ky" class="hover:text-funny-cyan-teal transition-colors">Đăng ký tư vấn</a></li>
+                    </ul>
+                </div>
+            </div>
+           
+            <div class="border-t border-gray-100 pt-6 flex flex-col items-center text-xs text-gray-400">
+                <p>© 2026 Trạm Công Nghệ Funny</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ==================================================================================== -->
+    <!-- JAVASCRIPT ĐIỀU KHIỂN -->
+    <!-- ==================================================================================== -->
+    <script>
+        // ----------------------------------------------------------------------------------
+        // 1. KHU VỰC CẤU HÌNH DỮ LIỆU (DÀNH CHO QUẢN TRỊ VIÊN)
+        // ----------------------------------------------------------------------------------
+        const APP_CONFIG = {
+            courses: [
+                {
+                    icon: '🐍', iconBgColor: 'bg-funny-cyan-light/20', iconColor: 'text-funny-cyan-teal',
+                    title: 'Khám phá Python', description: 'Bắt đầu từ những điều đơn giản nhất, học sinh từng bước tạo ra chương trình và game nhỏ của riêng mình.',
+                    features: [{ label: 'Độ tuổi:', value: 'Lớp 6 trở lên' }, { label: 'Thời lượng:', value: '20 buổi' }, { label: 'Thành quả:', value: 'Phát triển tư duy logic, ứng dụng giải toán.' }],
+                    badge: '🔥 HOT', badgeColor: 'bg-funny-orange-badge'
+                },
+                {
+                    icon: '😼', iconBgColor: 'bg-funny-orange-cta/20', iconColor: 'text-funny-orange-badge',
+                    title: 'Khám phá Scratch', description: 'Học sinh làm quen lập trình qua việc tạo game và hoạt hình sinh động bằng hình ảnh trực quan.',
+                    features: [{ label: 'Độ tuổi:', value: 'Lớp 3 - Lớp 5' }, { label: 'Thời lượng:', value: '20 buổi' }, { label: 'Thành quả:', value: 'Sáng tạo game & phim hoạt hình đơn giản.' }],
+                    badge: '🔥 HOT', badgeColor: 'bg-funny-orange-badge'
+                },
+                {
+                    icon: '💻', iconBgColor: 'bg-funny-cyan-light/20', iconColor: 'text-funny-cyan-teal',
+                    title: 'Khám phá lập trình Web', description: 'Giúp học sinh hiểu cách một trang web được tạo ra và tự xây dựng website đơn giản của riêng mình.',
+                    features: [{ label: 'Đối tượng:', value: 'Lớp 9 trở lên' }, { label: 'Thời lượng:', value: '20 buổi' }, { label: 'Thành quả:', value: 'Hiểu được hoạt động của trang Web, Tạo website cá nhân hiển thị nội dung cơ bản' }],
+                    badge: '', badgeColor: ''
+                },
+                {
+                    icon: '🧑‍💻', iconBgColor: 'bg-funny-cyan-light/20', iconColor: 'text-funny-cyan-teal',
+                    title: 'Python thi đấu', description: 'Nâng cao kỹ năng lập trình và rèn luyện tư duy giải bài để sẵn sàng tham gia các kỳ thi lập trình.',
+                    features: [{ label: 'Đối tượng:', value: 'Lớp 6 trở lên' }, { label: 'Thành quả:', value: 'Rèn luyện tư duy thuật toán, giải đề, luyện thi' }],
+                    badge: '🔥 HOT', badgeColor: ''
+                },
+            ],
+
+
+            achievements: [
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Python thi đấu', 
+                  tag: 'Python thi đấu', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Nguyễn Hoàng Quân', 
+                  description: 'Giải 3 cuộc thi Lập trình Quốc tế TOFAS.' 
+                },
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Python thi đấu', 
+                  tag: 'Python thi đấu', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Hà Đức Anh', 
+                  description: 'Giải nhì đội tuyển học sinh giỏi môn Tin tỉnh Hưng Yên, Giải khuyến khích cuộc thi Lập trình Quốc tế TOFAS.'
+                },
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Khám phá Python', 
+                  tag: 'Khám phá Python', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Nguyễn Ngọc Trúc Linh', 
+                  description: 'Vòng chung kết cuộc thi Lập trình Quốc tế TOFAS.'
+                  
+                },
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Khám phá Python', 
+                  tag: 'Khám phá Python', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Nguyễn Nhật Dương', 
+                  description: 'Vòng chung kết cuộc thi Lập trình Quốc tế TOFAS.' 
+                  
+                },
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Khám phá Python', 
+                  tag: 'Khám phá Python', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Bùi Minh Phú', 
+                  description: 'Vòng chung kết cuộc thi Lập trình Quốc tế TOFAS.' 
+                  
+                },
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Khám phá Python', 
+                  tag: 'Khám phá Python', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Đăng Khương Duy', 
+                  description: 'Vòng chung kết cuộc thi Lập trình Quốc tế TOFAS.' 
+                  
+                },
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Khám phá Scratch', 
+                  tag: 'Khám phá Scratch', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Trần Minh Quang', 
+                  description: 'Vòng chung kết cuộc thi Lập trình Quốc tế TOFAS.' 
+                  
+                },
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Khám phá Python', 
+                  tag: 'Khám phá Python', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Trần Mạnh Đại', 
+                  description: 'Vòng chung kết cuộc thi Lập trình Quốc tế TOFAS.' 
+                  
+                },
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Khám phá Python', 
+                  tag: 'Khám phá Python', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Bùi Đức Hưng', 
+                  description: 'Vòng chung kết cuộc thi Lập trình Quốc tế TOFAS.' 
+                  
+                },
+                { 
+                  image: 'image_5a4f49.jpg', 
+                  fallbackText: 'Python thi đấu', 
+                  tag: 'Python thi đấu', 
+                  tagColor: 'bg-funny-orange-badge', 
+                  studentName: 'Nguyễn Gia Phúc', 
+                  description: 'Vòng chung kết cuộc thi Lập trình Quốc tế TOFAS.' 
+                  
+                }
+            ]
+        };
+
+
+        // ----------------------------------------------------------------------------------
+        // 2. LOGIC BANNER SLIDER TỰ ĐỘNG CHUYỂN
+        // ----------------------------------------------------------------------------------
+        let currentBanner = 0;
+        const totalBanners = 3;
+        let bannerInterval;
+        const bannerSlider = document.getElementById('banner-slider');
+        const bannerDots = document.querySelectorAll('.banner-dot');
+        const bannerSection = document.getElementById('hero-banner-section');
+
+
+        function updateDots() {
+            bannerDots.forEach((dot, index) => {
+                if (index === currentBanner) {
+                    dot.className = 'banner-dot w-10 h-2.5 rounded-full bg-funny-gold-light transition-all shadow-md';
+                } else {
+                    dot.className = 'banner-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all shadow-md';
+                }
+            });
+        }
+
+
+        function goToBanner(index) {
+            currentBanner = index;
+            bannerSlider.style.transform = `translateX(-${currentBanner * 100}%)`;
+            updateDots();
+            stopBannerAutoPlay(); // Dừng khi người dùng chủ động click
+        }
+
+
+        function nextBanner() {
+            currentBanner = (currentBanner + 1) % totalBanners;
+            bannerSlider.style.transform = `translateX(-${currentBanner * 100}%)`;
+            updateDots();
+        }
+
+
+        function startBannerAutoPlay() {
+            bannerInterval = setInterval(nextBanner, 5000); // 5 giây đổi 1 lần
+        }
+
+
+        function stopBannerAutoPlay() {
+            clearInterval(bannerInterval);
+        }
+
+
+        // Lắng nghe tương tác trên Banner để dừng AutoPlay
+        if(bannerSection) {
+            bannerSection.addEventListener('click', stopBannerAutoPlay);
+            bannerSection.addEventListener('touchstart', stopBannerAutoPlay, {passive: true});
+            // Bắt đầu chạy tự động
+            startBannerAutoPlay();
+        }
+
+
+
+
+        // ----------------------------------------------------------------------------------
+        // 3. LOGIC RENDER & CUỘN VÔ TẬN "XÂY ĐƯỜNG RAY TỚI ĐÂU, CHẠY TỚI ĐÓ"
+        // ----------------------------------------------------------------------------------
+        function populateFormSelect() {
+            const select = document.getElementById('form_course_select');
+            APP_CONFIG.courses.forEach(course => {
+                select.insertAdjacentHTML('beforeend', `<option value="${course.title}">${course.title}</option>`);
+            });
+        }
+
+
+        function initSeamlessInfiniteScroll(containerId, dataArray, renderItemFn, prevClass, nextClass) {
+            const container = document.getElementById(containerId);
+            if (!container || !dataArray || dataArray.length === 0) return;
+
+
+            let html = '';
+            for (let i = 0; i < 3; i++) {
+                dataArray.forEach(item => html += renderItemFn(item));
+            }
+            container.innerHTML = html;
+
+
+            const appendSet = () => {
+                let extraHtml = '';
+                dataArray.forEach(item => extraHtml += renderItemFn(item));
+                container.insertAdjacentHTML('beforeend', extraHtml);
+            };
+
+
+            const prependSet = () => {
+                const oldScrollWidth = container.scrollWidth;
+                let extraHtml = '';
+                [...dataArray].reverse().forEach(item => extraHtml += renderItemFn(item));
+                container.insertAdjacentHTML('afterbegin', extraHtml);
+                container.scrollLeft += (container.scrollWidth - oldScrollWidth);
+            };
+
+
+            setTimeout(() => {
+                container.style.scrollBehavior = 'auto';
+                container.scrollLeft = container.scrollWidth / 3;
+                setTimeout(() => container.style.scrollBehavior = 'smooth', 50);
+            }, 100);
+
+
+            let isExtending = false;
+            container.addEventListener('scroll', () => {
+                if (isExtending) return;
+               
+                if (container.scrollWidth - container.scrollLeft - container.clientWidth < 600) {
+                    isExtending = true;
+                    appendSet();
+                    setTimeout(() => isExtending = false, 100);
+                }
+               
+                if (container.scrollLeft < 600) {
+                    isExtending = true;
+                    prependSet();
+                    setTimeout(() => isExtending = false, 100);
+                }
+            }, { passive: true });
+
+
+            const prevBtn = document.querySelector(prevClass);
+            const nextBtn = document.querySelector(nextClass);
+
+
+            const scrollByItem = (direction) => {
+                const itemWidth = container.firstElementChild.offsetWidth;
+                const gap = parseFloat(window.getComputedStyle(container).gap) || 0;
+                container.scrollBy({ left: direction * (itemWidth + gap), behavior: 'smooth' });
+            };
+
+
+            if (prevBtn) prevBtn.addEventListener('click', () => scrollByItem(-1));
+            if (nextBtn) nextBtn.addEventListener('click', () => scrollByItem(1));
+        }
+
+
+        const renderCourseCard = (course) => `
+            <div class="snap-center shrink-0 w-[85vw] sm:w-[300px] md:w-[340px] bubble-frame p-5 md:p-6 flex flex-col group ${course.badge ? 'border-funny-orange-cta relative shadow-xl bg-white' : 'bg-gray-50/50'} h-auto self-stretch text-left">
+                ${course.badge ? `<div class="absolute -top-3 md:-top-4 right-4 md:right-6 ${course.badgeColor || 'bg-funny-orange-badge'} text-white px-3 md:px-4 py-1 rounded-full text-[10px] md:text-xs font-bold shadow-md animate-pulse">${course.badge}</div>` : ''}
+                <div class="flex-1 flex flex-col">
+                    <div class="w-12 h-12 md:w-16 md:h-16 ${course.iconBgColor} rounded-xl md:rounded-[1.5rem] flex items-center justify-center mb-4 md:mb-5 group-hover:${course.badge ? 'bg-funny-orange-badge' : 'bg-funny-cyan-teal'} transition-colors shrink-0">
+                        <span class="text-2xl md:text-3xl">${course.icon}</span>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold text-funny-blue-dark mb-2 shrink-0">${course.title}</h3>
+                    <p class="text-funny-text-gray text-xs md:text-sm mb-4 md:mb-5 shrink-0">${course.description}</p>
+                   
+                    <ul class="space-y-3 mb-6 flex-1">
+                        ${course.features.map(feat => `
+                            <li class="text-xs md:text-sm font-medium flex items-start gap-2 text-left">
+                                <span class="${course.iconColor} shrink-0 mt-[2px]">✔</span>
+                                <span class="flex-1"><strong class="text-funny-blue-dark">${feat.label}</strong> ${feat.value}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                <button onclick="selectCourse('${course.title}')" class="w-full py-3 ${course.badge ? 'bg-funny-orange-cta text-funny-text-dark shadow-[0_4px_0_#CFA046] hover:translate-y-0.5 hover:shadow-[0_2px_0_#CFA046]' : 'bg-white border-2 border-funny-blue-dark text-funny-blue-dark hover:bg-funny-blue-dark hover:text-white shadow-sm'} rounded-full font-bold transition-all text-sm md:text-base mt-auto shrink-0">
+                    Tư Vấn Khóa Này
+                </button>
+            </div>
+        `;
+
+
+        const renderAchievementCard = (ach) => `
+            <div class="snap-center shrink-0 w-[80vw] sm:w-[280px] md:w-[320px] bg-white rounded-2xl md:rounded-[2rem] p-3 shadow-lg border border-funny-gold-decor/50 hover:shadow-xl transition-shadow flex flex-col h-auto self-stretch text-left relative hover:z-40 transition-all duration-300">
+                <div class="w-full aspect-video bg-gray-200 rounded-xl md:rounded-2xl mb-3 md:mb-4 overflow-hidden relative group shrink-0">
+                    <img src="${ach.image}" alt="${ach.fallbackText}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/300x200/2F5C8F/FFFFFF?text=${encodeURIComponent(ach.fallbackText)}';">
+                    <div class="absolute bottom-2 right-2 ${ach.tagColor} text-white text-[10px] font-bold px-2 py-1 rounded">${ach.tag}</div>
+                </div>
+                <div class="px-2 pb-2 flex-1 flex flex-col">
+                    <h4 class="font-extrabold text-funny-blue-dark text-sm md:text-base">${ach.studentName}</h4>
+                    
+                    <div class="relative flex-1 group/tooltip mt-1">
+                        <p class="text-xs md:text-sm text-funny-text-gray line-clamp-2 cursor-pointer" title="Chạm/Di chuột để xem đầy đủ">${ach.description}</p>
+                        
+                        <div class="absolute top-[-10px] left-[-10px] w-[calc(100%+20px)] bg-white text-funny-text-gray text-xs md:text-sm p-3 rounded-xl shadow-2xl border border-funny-gold-decor/30 opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-300 z-50 pointer-events-none">
+                            <span class="font-bold text-funny-blue-dark block mb-1">Thành tích:</span>
+                            ${ach.description}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            populateFormSelect();
+            initSeamlessInfiniteScroll('course-scroll', APP_CONFIG.courses, renderCourseCard, '.prev-course', '.next-course');
+            initSeamlessInfiniteScroll('achievement-scroll', APP_CONFIG.achievements, renderAchievementCard, '.prev-achievement', '.next-achievement');
+        });
+
+
+        // ----------------------------------------------------------------------------------
+        // 4. CÁC CHỨC NĂNG CƠ BẢN (Menu, Chọn Khóa Học, Sticky Nav)
+        // ----------------------------------------------------------------------------------
+        function selectCourse(courseName) {
+            document.getElementById('dang-ky').scrollIntoView({ behavior: 'smooth' });
+            const selectBox = document.getElementById('form_course_select');
+            for (let i = 0; i < selectBox.options.length; i++) {
+                if (selectBox.options[i].value.includes(courseName)) {
+                    selectBox.selectedIndex = i;
+                    break;
+                }
+            }
+            setTimeout(() => { document.getElementById('parentName').focus(); }, 500);
+        }
+
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); });
+        });
+
+
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 10) {
+                nav.classList.add('shadow-md');
+                nav.classList.remove('shadow-sm');
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.classList.add('shadow-sm');
+            }
+        });
+
+
+        // ----------------------------------------------------------------------------------
+        // 5. UTM TRACKING
+        // ----------------------------------------------------------------------------------
+        function getAndSaveUTM() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let utmSource = urlParams.get('utm_source');
+           
+            if (utmSource) {
+                localStorage.setItem('campaign_utm_source', utmSource);
+                return utmSource;
+            }
+            return localStorage.getItem('campaign_utm_source') || 'Nguồn trung tâm';
+        }
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            getAndSaveUTM();
+        });
+
+
+        // ----------------------------------------------------------------------------------
+        // 6. XỬ LÝ SUBMIT FORM
+        // ----------------------------------------------------------------------------------
+        let submitted = false;
+        const form = document.getElementById('leadForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const hiddenIframe = document.getElementById('hidden_iframe');
+
+
+        if (hiddenIframe) {
+            hiddenIframe.addEventListener('load', function() {
+                if (submitted) {
+                    handleFormSubmit();
+                }
+            });
+        }
+
+
+        form.addEventListener('submit', function() {
+            const utmInput = document.getElementById('utm_source');
+            if (utmInput) {
+                utmInput.value = getAndSaveUTM();
+            }
+
+
+            submitted = true;
+            submitBtn.innerHTML = 'ĐANG XỬ LÝ...';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.style.pointerEvents = 'none';
+        });
+
+
+        function handleFormSubmit() {
+            successMessage.classList.remove('hidden');
+            form.reset();
+            submitBtn.innerHTML = 'GỬI THÔNG TIN NGAY';
+            submitBtn.style.opacity = '1';
+            submitBtn.style.pointerEvents = 'auto';
+            setTimeout(() => { successMessage.classList.add('hidden'); }, 5000);
+            submitted = false;
+        }
+    </script>
+</body>
+</html>
+
+
+
